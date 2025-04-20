@@ -7,29 +7,29 @@
         <div class="row">
             <div class="col-sm-12">
                 <h4 class="page-title">Diabetes Check Up</h4>
+                <p>The diabetes check focuses on key health parameters like glucose levels, blood pressure, and BMI to assess your risk of diabetes. This targeted analysis helps in early detection and management of diabetes, ensuring better health outcomes.</p>
                 <h4 class="page-title">Please enter the following parameters:</h4>
             </div>
             <form method="POST" action="" enctype="multipart/form-data">
                 <div class="form-group">
-                {% csrf_token %}
-                {{diabetes_form.as_p }}
+                    {% csrf_token %}
+                    {{ diabetes_form.as_p }}
                 </div>
-                <button type="Check" class="btn btn-primary btn-user "> Submit</button>
+                <button type="submit" class="btn btn-primary btn-user">Submit</button>
             </form>
-
-        <!-- </div><br><br>
+        </div>
+        <br><br>
         <div class="col-sm-12">
-            <h4 class="page-title">Diabetes parameters information</h4>
-
-        <h5>Pregnancies : Number of times pregnant </h5>
-        <h5>Glucose : Plasma glucose concentration a 2 hours in an oral glucose tolerance test</h5>
-        <h5>BloodPressure : Diastolic blood pressure (mm Hg)</h5>
-        <h5>SkinThickness : Triceps skin fold thickness (mm)</h5>
-        <h5>Insulin : 2-Hour serum insulin (mu U/ml) </h5>
-        <h5> BMI : Body mass index (weight in kg/(height in m)^2) </h5>
-        <h5>DiabetesPedigreeFunction : Diabetes pedigree function </h5>
-        <h5>Age : Age (years)</h5>
-    </div> -->
+            <h4 class="page-title">Diabetes Parameters Information</h4>
+            <h5>Pregnancies: Number of times pregnant</h5>
+            <h5>Glucose: Plasma glucose concentration a 2 hours in an oral glucose tolerance test</h5>
+            <h5>Blood Pressure: Diastolic blood pressure (mm Hg)</h5>
+            <h5>Skin Thickness: Triceps skin fold thickness (mm)</h5>
+            <h5>Insulin: 2-Hour serum insulin (mu U/ml)</h5>
+            <h5>BMI: Body mass index (weight in kg/(height in m)^2)</h5>
+            <h5>Diabetes Pedigree Function: Diabetes pedigree function</h5>
+            <h5>Age: Age (years)</h5>
+        </div>
     </div>
 </div>
 

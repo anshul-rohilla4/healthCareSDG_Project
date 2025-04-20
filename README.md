@@ -1,5 +1,5 @@
-# E-Health-Care
 
+# E-Health-Care
 The web app is designed to reduce dependence on doctors, assist underserved individuals with basic medical checkups, and help people avoid unnecessary medical expenses. This project is built with Django, machine learning algorithms, and deep learning (ANN and CNN).
 
 ## Overview
@@ -114,3 +114,4 @@ The project uses UV for Python dependency management, which allows for quick and
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss proposed changes.
+https://github.com/Pradip-p/E-Health-Care.git

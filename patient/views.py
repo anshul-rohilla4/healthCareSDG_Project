@@ -284,57 +284,66 @@ def heart(request):
 @login_required(login_url='patient_login')
 @allowed_users(allowed_roles=['PATIENT'])
 def dashboard(request):
-    if request.method =="POST":
-        contex = {}
-        if request.POST.get('value1'):
+    if request.method == "POST":
+        # Only proceed if at least one value is non-empty
+        values = {
+            'value1': request.POST.get('value1', ''),
+            'value2': request.POST.get('value2', ''),
+            'value3': request.POST.get('value3', ''), 
+            'value4': request.POST.get('value4', ''),
+            'value5': request.POST.get('value5', ''),
+            'value6': request.POST.get('value6', '')
+        }
+        
+        # Count non-empty values
+        non_empty_values = sum(1 for v in values.values() if v)
+        
+        if non_empty_values > 0:
             disease = Disease()
-            value1 = request.POST.get('value1')
-
-            value2 = request.POST.get('value2')
-
-            value3 = request.POST.get('value3')
-
-            value4 = request.POST.get('value4')
-
-            value5 = request.POST.get('value5')
-
-            value6 = request.POST.get('value6')
-
-            disease.value_1 = value1
-            disease.value_2 = value2
-            disease.value_3 = value3
-            disease.value_4 = value4
-            disease.value_5 = value5
-            disease.value_6 = value6
+            disease.value_1 = values['value1']
+            disease.value_2 = values['value2']
+            disease.value_3 = values['value3']
+            disease.value_4 = values['value4']
+            disease.value_5 = values['value5']
+            disease.value_6 = values['value6']
             disease.save()
+            
             ob = Disease.objects.latest('id')
             sur = pred(ob)
-            predicted_disease_name = sur[0][0]
-            symptoms = sur[1]
 
-            value1 = symptoms[0]
-            value2 = symptoms[1]
-            value3 = symptoms[2]
-            value4 = symptoms[3]
-            value5 = symptoms[4]
-            value6 = symptoms[5]
+            # Ensure the `pred()` function returns a valid structure
+            if len(sur) > 1 and len(sur[1]) >= 6:
+                predicted_disease_name = sur[0][0]
+                symptoms = sur[1]
+            else:
+                predicted_disease_name = "mild symptops"
+                symptoms = [""] * 6  # Default empty symptoms if not enough data
 
-            # patient who predrict disease is save in now database
-            predict=WhoPredictDisease(predict_by=request.user.profile,predicted_disease=predicted_disease_name)
+            # Save who predicted disease
+            predict = WhoPredictDisease(
+                predict_by=request.user.profile,
+                predicted_disease=predicted_disease_name
+            )
             predict.save()
-            disease=Disease1.objects.filter(name__icontains=predicted_disease_name)
-            listDoctorID=[]
-            for d in disease:
-                listDoctorID.append(d.doctor.id)
-            disease_doctor_list=DoctorInfo.objects.filter(Q(id__in=listDoctorID))
 
+            # Get relevant doctors
+            disease = Disease1.objects.filter(name__icontains=predicted_disease_name)
+            listDoctorID = [d.doctor.id for d in disease]
+            disease_doctor_list = DoctorInfo.objects.filter(Q(id__in=listDoctorID))
 
+            context = {
+                "Predicted_disease": predicted_disease_name,
+                'disease_doctor_list': disease_doctor_list,
+                "value1": symptoms[0] if len(symptoms) > 0 else "",
+                "value2": symptoms[1] if len(symptoms) > 1 else "",
+                "value3": symptoms[2] if len(symptoms) > 2 else "",
+                "value4": symptoms[3] if len(symptoms) > 3 else "",
+                "value5": symptoms[4] if len(symptoms) > 4 else "",
+                "value6": symptoms[5] if len(symptoms) > 5 else ""
+            }
+            return render(request, 'patient/showDisease.html', context)
 
-        return render(request, 'patient/showDisease.html', context = {"Predicted_disease":predicted_disease_name,'disease_doctor_list':disease_doctor_list,"value1": value1, 		"value2":value2, "value3":value3, "value4": value4, "value5":value5, "value6": value6})
-
-    else:
-        return render(request, 'patient/dashboard.html')
-
+    return render(request, 'patient/dashboard.html')
 
 
 # Appointment section.........................
