@@ -1,3 +1,6 @@
+source venv/bin/activate
+
+
 uv run python manage.py runserver
 
 admin
